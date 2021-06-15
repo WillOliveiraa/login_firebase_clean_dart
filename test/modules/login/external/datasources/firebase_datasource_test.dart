@@ -4,22 +4,23 @@ import 'package:login_firebase_clean_dart/modules/login/external/datasources/fir
 import 'package:login_firebase_clean_dart/modules/login/infra/models/user_model.dart';
 import 'package:mockito/mockito.dart';
 
+class FirebaseUserMock extends Mock implements User {} // FirebaseUser
+
+class UserCredentialMock extends Mock implements UserCredential {} // AuthResult
+
 class FirebaseAuthMock extends Mock implements FirebaseAuth {}
-
-class UserCredentialMock extends Mock implements UserCredential {}
-
-class FirebaseUserMock extends Mock implements User {}
 
 main() {
   final auth = FirebaseAuthMock();
-  final userCredential = UserCredentialMock();
-  final datasource = FirebaseDatasourceImpl(auth);
   final firebaseUser = FirebaseUserMock();
   final user = UserModel(
     name: "Will Oliveira",
     email: "will@teste.com",
     phoneNumber: "1234567",
   );
+
+  final userCredential = UserCredentialMock();
+  final datasource = FirebaseDatasourceImpl(auth);
 
   setUpAll(() {
     when(firebaseUser.displayName).thenReturn(user.name);
@@ -29,6 +30,9 @@ main() {
 
     when(auth.signInWithEmailAndPassword(
             email: anyNamed('email'), password: anyNamed('password')))
+        .thenAnswer((_) async => userCredential);
+
+    when(auth.signInWithCredential(any))
         .thenAnswer((_) async => userCredential);
   });
 
