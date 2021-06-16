@@ -21,4 +21,15 @@ class LoginRepositoryImpl implements LoginRepository {
       return Left(ErrorLoginEmail(message: "Error login with Email"));
     }
   }
+
+  @override
+  Future<Either<Failure, LoggedUserInfo>> loginPhone({String phone}) async {
+    try {
+      final user = await datasource.loginPhone(phone: phone);
+
+      return Right(user);
+    } catch (e) {
+      return Left(ErrorLoginPhone(message: "Error login with phone"));
+    }
+  }
 }

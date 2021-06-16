@@ -6,3 +6,8 @@ class ErrorLoginEmail extends Failure {
   final String message;
   ErrorLoginEmail({this.message});
 }
+
+class ErrorLoginPhone extends Failure {
+  final String message;
+  ErrorLoginPhone({this.message});
+}

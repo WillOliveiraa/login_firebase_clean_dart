@@ -5,4 +5,6 @@ import 'package:login_firebase_clean_dart/modules/login/domain/errors/errors.dar
 abstract class LoginRepository {
   Future<Either<Failure, LoggedUserInfo>> loginEmail(
       {String email, String password});
+
+  Future<Either<Failure, LoggedUserInfo>> loginPhone({String phone});
 }

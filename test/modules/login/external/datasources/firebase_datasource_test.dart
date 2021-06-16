@@ -8,7 +8,39 @@ class FirebaseUserMock extends Mock implements User {} // FirebaseUser
 
 class UserCredentialMock extends Mock implements UserCredential {} // AuthResult
 
-class FirebaseAuthMock extends Mock implements FirebaseAuth {}
+class PhoneAuthCredentialMock extends Mock implements PhoneAuthCredential {}
+
+class AuthExceptionMock extends Mock implements FirebaseAuthException {}
+
+class FirebaseAuthMock extends Mock implements FirebaseAuth {
+  @override
+  Future<void> verifyPhoneNumber({
+    String phoneNumber,
+    verificationCompleted,
+    verificationFailed,
+    codeSent,
+    codeAutoRetrievalTimeout,
+    String autoRetrievedSmsCodeForTesting,
+    Duration timeout,
+    int forceResendingToken,
+  }) async {
+    Future.delayed(Duration(milliseconds: 800)).then((value) {
+      if (phoneNumber == "0") {
+        verificationCompleted(credential);
+      } else if (phoneNumber == "1") {
+        verificationFailed(authException);
+      } else if (phoneNumber == "2") {
+        codeSent("dwf32f", 1);
+      } else if (phoneNumber == "3") {
+        codeAutoRetrievalTimeout("dwf32f");
+      }
+    });
+    return;
+  }
+}
+
+final credential = PhoneAuthCredentialMock();
+final authException = AuthExceptionMock();
 
 main() {
   final auth = FirebaseAuthMock();
@@ -38,6 +70,14 @@ main() {
 
   test('should return Logged User loginEmail', () async {
     final result = await datasource.loginEmail();
+
+    expect(result.name, equals(user.name));
+    expect(result.phoneNumber, equals(user.phoneNumber));
+    expect(result.email, equals(user.email));
+  });
+
+  test('should return Logged User loginPhone', () async {
+    final result = await datasource.loginPhone(phone: "0");
 
     expect(result.name, equals(user.name));
     expect(result.phoneNumber, equals(user.phoneNumber));

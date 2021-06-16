@@ -34,5 +34,24 @@ main() {
 
       expect(result.leftMap((l) => l is ErrorLoginEmail), Left(true));
     });
+
+    group("loginPhone", () {
+      test('should get UserModel', () async {
+        when(datasource.loginPhone(phone: anyNamed('phone')))
+            .thenAnswer((_) async => userReturn);
+
+        final result = await repository.loginPhone();
+
+        expect(result, isA<Right<dynamic, LoggedUserInfo>>());
+      });
+      test('should call ErrorLoginPhone', () async {
+        when(datasource.loginPhone(phone: anyNamed('phone')))
+            .thenThrow(ErrorLoginPhone());
+
+        final result = await repository.loginPhone();
+
+        expect(result.leftMap((l) => l is ErrorLoginPhone), Left(true));
+      });
+    });
   });
 }
