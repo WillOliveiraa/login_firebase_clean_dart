@@ -44,4 +44,15 @@ class LoginRepositoryImpl implements LoginRepository {
           message: "Error trying to retrieve current logged user"));
     }
   }
+
+  @override
+  Future<Either<Failure, Unit>> logout() async {
+    try {
+      await datasource.logout();
+
+      return Right(unit);
+    } catch (e) {
+      return Left(ErrorLogout(message: "Error in logout"));
+    }
+  }
 }

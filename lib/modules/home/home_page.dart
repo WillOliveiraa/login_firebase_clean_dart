@@ -43,9 +43,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           Text("phone: ${authStore?.user?.phoneNumber}"),
         SizedBox(height: 10),
         ElevatedButton(
-          onPressed: () {
-            // authStore.signOut();
-          },
+          onPressed: () => authStore.signOut(),
           child: Text("Logout"),
         ),
       ],
@@ -54,9 +52,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
 
   Widget _getLogoutScreen() {
     return ElevatedButton(
-      onPressed: () {
-        Modular.to.pushNamed("/login");
-      },
+      onPressed: () => Modular.to.pushNamed("/login"),
       child: Text("Login"),
     );
   }

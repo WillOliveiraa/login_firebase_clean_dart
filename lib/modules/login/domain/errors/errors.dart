@@ -16,3 +16,8 @@ class ErrorGetLoggedUser extends Failure {
   final String message;
   ErrorGetLoggedUser({this.message});
 }
+
+class ErrorLogout extends Failure {
+  final String message;
+  ErrorLogout({this.message});
+}

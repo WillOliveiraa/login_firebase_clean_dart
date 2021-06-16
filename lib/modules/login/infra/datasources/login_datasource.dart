@@ -6,4 +6,6 @@ abstract class LoginDatasource {
   Future<UserModel> loginPhone({String phone});
 
   Future<UserModel> currentUser();
+
+  Future<void> logout();
 }

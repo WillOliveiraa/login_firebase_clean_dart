@@ -90,12 +90,18 @@ main() {
   });
 
   test('should return Logged User', () async {
-    when(auth.currentUser).thenAnswer((realInvocation) => firebaseUser);
+    when(auth.currentUser).thenAnswer((_) => firebaseUser);
 
     var result = await datasource.currentUser();
 
     expect(result.name, equals(user.name));
     expect(result.phoneNumber, equals(user.phoneNumber));
     expect(result.email, equals(user.email));
+  });
+
+  test('should complete logout', () async {
+    when(auth.signOut()).thenAnswer((_) async {});
+
+    expect(datasource.logout(), completes);
   });
 }

@@ -64,4 +64,9 @@ class FirebaseDatasourceImpl implements LoginDatasource {
       email: user.email,
     );
   }
+
+  @override
+  Future<void> logout() async {
+    return await auth.signOut();
+  }
 }

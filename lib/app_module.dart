@@ -10,7 +10,7 @@ class AppModule extends Module {
   final List<Bind> binds = [
     ...LoginModule.export,
     Bind((i) => FirebaseAuth.instance),
-    Bind((i) => AuthStore(i())),
+    Bind((i) => AuthStore(i(), i())),
   ];
 
   @override

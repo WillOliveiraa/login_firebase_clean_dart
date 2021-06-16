@@ -43,7 +43,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
               ),
               GestureDetector(
                 onTap: () {
-                  Modular.to.pushNamed("/phone");
+                  Modular.to.pushNamed("/login/phone");
                 },
                 child: Align(
                   alignment: Alignment.bottomRight,

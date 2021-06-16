@@ -38,7 +38,7 @@ abstract class _LoginControllerBase with Store {
   @computed
   bool get isValid => credential.isValidEmail && credential.isValidPassword;
 
-  enterEmail() async {
+  void enterEmail() async {
     loading.show();
     await Future.delayed(Duration(seconds: 1));
     var result = await loginWithEmailUsecase(credential);
@@ -46,9 +46,9 @@ abstract class _LoginControllerBase with Store {
     result.fold((failure) {
       asuka.showSnackBar(SnackBar(content: Text(failure.message)));
     }, (user) {
-      // authStore.setUser(user);
-      Modular.to
-          .popUntil(ModalRoute.withName(Modular.navigatorDelegate.modulePath));
+      authStore.setUser(user);
+      // Modular.to
+      //     .popUntil(ModalRoute.withName(Modular.navigatorDelegate.modulePath));
       Modular.to.pop();
     });
   }

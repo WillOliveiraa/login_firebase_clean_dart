@@ -72,4 +72,22 @@ main() {
       expect(result.leftMap((l) => l is ErrorGetLoggedUser), Left(true));
     });
   });
+
+  group("logout", () {
+    test('should get logout', () async {
+      when(datasource.logout()).thenAnswer((_) async {});
+
+      var result = await repository.logout();
+
+      expect(result, isA<Right<dynamic, Unit>>());
+    });
+
+    test('should Throw when user try logout', () async {
+      when(datasource.logout()).thenThrow(ErrorLogout());
+
+      var result = await repository.logout();
+
+      expect(result.leftMap((l) => l is ErrorLogout), Left(true));
+    });
+  });
 }
