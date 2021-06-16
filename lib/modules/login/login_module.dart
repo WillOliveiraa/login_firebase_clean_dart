@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:login_firebase_clean_dart/app/core/stores/auth_store.dart';
+import 'package:login_firebase_clean_dart/modules/login/domain/usecases/get_logged_user.dart';
 import 'package:login_firebase_clean_dart/modules/login/domain/usecases/login_with_email.dart';
 import 'package:login_firebase_clean_dart/modules/login/domain/usecases/login_with_phone.dart';
 import 'package:login_firebase_clean_dart/modules/login/external/datasources/firebase_datasource.dart';
@@ -13,6 +14,7 @@ import 'package:login_firebase_clean_dart/modules/login/presenter/utils/loading_
 // ignore: must_be_immutable
 class LoginModule extends Module {
   static List<Bind> export = [
+    Bind.singleton((i) => GetLoggedUserImpl(i())),
     Bind.singleton((i) => LoginRepositoryImpl(i())),
     Bind.singleton((i) => FirebaseDatasourceImpl(i())),
   ];

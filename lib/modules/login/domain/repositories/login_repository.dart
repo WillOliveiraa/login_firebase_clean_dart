@@ -7,4 +7,6 @@ abstract class LoginRepository {
       {String email, String password});
 
   Future<Either<Failure, LoggedUserInfo>> loginPhone({String phone});
+
+  Future<Either<Failure, LoggedUserInfo>> loggedUser();
 }

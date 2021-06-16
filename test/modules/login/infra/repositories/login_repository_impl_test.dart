@@ -54,4 +54,22 @@ main() {
       });
     });
   });
+
+  group("loggedUser", () {
+    test('should get Current User Logged', () async {
+      when(datasource.currentUser()).thenAnswer((_) async => userReturn);
+
+      var result = await repository.loggedUser();
+
+      expect(result, isA<Right<dynamic, LoggedUserInfo>>());
+    });
+
+    test('should Throw when user not logged', () async {
+      when(datasource.currentUser()).thenThrow(ErrorGetLoggedUser());
+
+      var result = await repository.loggedUser();
+
+      expect(result.leftMap((l) => l is ErrorGetLoggedUser), Left(true));
+    });
+  });
 }

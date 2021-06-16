@@ -4,4 +4,6 @@ abstract class LoginDatasource {
   Future<UserModel> loginEmail({String email, String password});
 
   Future<UserModel> loginPhone({String phone});
+
+  Future<UserModel> currentUser();
 }

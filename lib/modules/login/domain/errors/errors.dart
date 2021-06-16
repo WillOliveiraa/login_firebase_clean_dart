@@ -11,3 +11,8 @@ class ErrorLoginPhone extends Failure {
   final String message;
   ErrorLoginPhone({this.message});
 }
+
+class ErrorGetLoggedUser extends Failure {
+  final String message;
+  ErrorGetLoggedUser({this.message});
+}

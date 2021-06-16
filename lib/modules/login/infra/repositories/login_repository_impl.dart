@@ -32,4 +32,16 @@ class LoginRepositoryImpl implements LoginRepository {
       return Left(ErrorLoginPhone(message: "Error login with phone"));
     }
   }
+
+  @override
+  Future<Either<Failure, LoggedUserInfo>> loggedUser() async {
+    try {
+      var user = await datasource.currentUser();
+
+      return Right(user);
+    } catch (e) {
+      return Left(ErrorGetLoggedUser(
+          message: "Error trying to retrieve current logged user"));
+    }
+  }
 }

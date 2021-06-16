@@ -83,4 +83,19 @@ main() {
     expect(result.phoneNumber, equals(user.phoneNumber));
     expect(result.email, equals(user.email));
   });
+
+  test('should return FirebaseUser loginPhone Error', () async {
+    expect(() async => await datasource.loginPhone(phone: "1"),
+        throwsA(authException));
+  });
+
+  test('should return Logged User', () async {
+    when(auth.currentUser).thenAnswer((realInvocation) => firebaseUser);
+
+    var result = await datasource.currentUser();
+
+    expect(result.name, equals(user.name));
+    expect(result.phoneNumber, equals(user.phoneNumber));
+    expect(result.email, equals(user.email));
+  });
 }
