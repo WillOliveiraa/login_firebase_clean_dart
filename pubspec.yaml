@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  connectivity_plus: ^1.0.3
   asuka: ^1.0.4
   flutter_mobx: ^1.1.0+2
   mobx: ^1.2.1+1

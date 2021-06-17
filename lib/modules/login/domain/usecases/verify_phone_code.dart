@@ -3,6 +3,7 @@ import 'package:login_firebase_clean_dart/modules/login/domain/entities/logged_u
 import 'package:login_firebase_clean_dart/modules/login/domain/entities/login_credential.dart';
 import 'package:login_firebase_clean_dart/modules/login/domain/errors/errors.dart';
 import 'package:login_firebase_clean_dart/modules/login/domain/repositories/login_repository.dart';
+import 'package:login_firebase_clean_dart/modules/login/domain/services/connectivity_service.dart';
 
 abstract class VerifyPhoneCode {
   Future<Either<Failure, LoggedUserInfo>> call(LoginCredential credential);
@@ -10,8 +11,9 @@ abstract class VerifyPhoneCode {
 
 class VerifyPhoneCodeImpl implements VerifyPhoneCode {
   final LoginRepository repository;
+  final ConnectivityService service;
 
-  VerifyPhoneCodeImpl(this.repository);
+  VerifyPhoneCodeImpl(this.repository, this.service);
 
   @override
   Future<Either<Failure, LoggedUserInfo>> call(
@@ -20,6 +22,12 @@ class VerifyPhoneCodeImpl implements VerifyPhoneCode {
       return Left(ErrorVerifyPhoneCode(message: "Invalid Code"));
     } else if (!credential.isValidVerificationId) {
       return Left(ErrorVerifyPhoneCode(message: "Invalid Verification Id"));
+    }
+
+    var result = await service.isOnline();
+
+    if (result.isLeft()) {
+      return result.map((r) => null);
     }
 
     return await repository.verifyPhoneCode(

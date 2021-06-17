@@ -3,6 +3,7 @@ import 'package:login_firebase_clean_dart/modules/login/domain/entities/logged_u
 import 'package:login_firebase_clean_dart/modules/login/domain/entities/login_credential.dart';
 import 'package:login_firebase_clean_dart/modules/login/domain/errors/errors.dart';
 import 'package:login_firebase_clean_dart/modules/login/domain/repositories/login_repository.dart';
+import 'package:login_firebase_clean_dart/modules/login/domain/services/connectivity_service.dart';
 
 abstract class LoginWithPhone {
   Future<Either<Failure, LoggedUserInfo>> call(LoginCredential credential);
@@ -10,8 +11,9 @@ abstract class LoginWithPhone {
 
 class LoginWithPhoneImpl implements LoginWithPhone {
   final LoginRepository repository;
+  final ConnectivityService service;
 
-  LoginWithPhoneImpl(this.repository);
+  LoginWithPhoneImpl(this.repository, this.service);
 
   @override
   Future<Either<Failure, LoggedUserInfo>> call(
@@ -19,6 +21,10 @@ class LoginWithPhoneImpl implements LoginWithPhone {
     if (!credential.isValidPhone) {
       return Left(ErrorLoginPhone(message: "Invalid Phone number"));
     }
+
+    var result = await service.isOnline();
+
+    if (result.isLeft()) return result.map((r) => null);
 
     return await repository.loginPhone(phone: credential.phone);
   }

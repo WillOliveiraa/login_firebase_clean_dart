@@ -28,6 +28,8 @@ class LoginRepositoryImpl implements LoginRepository {
       final user = await datasource.loginPhone(phone: phone);
 
       return Right(user);
+    } on NotAutomaticRetrieved catch (e) {
+      return Left(e);
     } catch (e) {
       return Left(ErrorLoginPhone(message: "Error login with phone"));
     }

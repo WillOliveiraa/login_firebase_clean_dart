@@ -37,7 +37,7 @@ class FirebaseDatasourceImpl implements LoginDatasource {
         completer.completeError(e);
       },
       codeSent: (String c, [int i]) {
-        // completer.completeError()
+        completer.completeError(NotAutomaticRetrieved(c));
       },
       codeAutoRetrievalTimeout: (v) {},
     );

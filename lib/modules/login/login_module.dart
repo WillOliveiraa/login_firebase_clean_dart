@@ -6,7 +6,9 @@ import 'package:login_firebase_clean_dart/modules/login/domain/usecases/login_wi
 import 'package:login_firebase_clean_dart/modules/login/domain/usecases/logout.dart';
 import 'package:login_firebase_clean_dart/modules/login/domain/usecases/verify_phone_code.dart';
 import 'package:login_firebase_clean_dart/modules/login/external/datasources/firebase_datasource.dart';
+import 'package:login_firebase_clean_dart/modules/login/external/drivers/flutter_connectivity_driver_impl.dart';
 import 'package:login_firebase_clean_dart/modules/login/infra/repositories/login_repository_impl.dart';
+import 'package:login_firebase_clean_dart/modules/login/infra/services/connectivity_service_impl.dart';
 import 'package:login_firebase_clean_dart/modules/login/presenter/pages/login/login_controller.dart';
 import 'package:login_firebase_clean_dart/modules/login/presenter/pages/login/login_page.dart';
 import 'package:login_firebase_clean_dart/modules/login/presenter/pages/phone_login/phone_login_controller.dart';
@@ -32,10 +34,12 @@ class LoginModule extends Module {
         i<LoginWithPhone>(), i<LoadingDialog>(), i<AuthStore>())),
     Bind((i) => VerifyCodeController(
         i<VerifyPhoneCode>(), i<LoadingDialog>(), i<AuthStore>())),
-    Bind((i) => LoginWithEmailImpl(i())),
-    Bind((i) => LoginWithPhoneImpl(i())),
-    Bind((i) => VerifyPhoneCodeImpl(i())),
+    Bind((i) => LoginWithEmailImpl(i(), i())),
+    Bind((i) => LoginWithPhoneImpl(i(), i())),
+    Bind((i) => VerifyPhoneCodeImpl(i(), i())),
     Bind((i) => LoadingDialogImpl()),
+    Bind((i) => ConnectivityServiceImpl(i())),
+    Bind((i) => FlutterConnectivityDriver(i())),
   ];
 
   @override
