@@ -69,4 +69,18 @@ class FirebaseDatasourceImpl implements LoginDatasource {
   Future<void> logout() async {
     return await auth.signOut();
   }
+
+  @override
+  Future<UserModel> verifyPhoneCode(
+      {String code, String verificationId}) async {
+    var _credential = PhoneAuthProvider.credential(
+        verificationId: verificationId, smsCode: code);
+
+    var user = (await auth.signInWithCredential(_credential)).user;
+
+    return UserModel(
+        name: user.displayName,
+        phoneNumber: user.phoneNumber,
+        email: user.email);
+  }
 }

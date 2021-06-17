@@ -55,4 +55,17 @@ class LoginRepositoryImpl implements LoginRepository {
       return Left(ErrorLogout(message: "Error in logout"));
     }
   }
+
+  @override
+  Future<Either<Failure, LoggedUserInfo>> verifyPhoneCode(
+      {String verificationId, String code}) async {
+    try {
+      var user = await datasource.verifyPhoneCode(
+          code: code, verificationId: verificationId);
+
+      return Right(user);
+    } catch (e) {
+      return Left(ErrorVerifyPhoneCode(message: "Error in verify phone code"));
+    }
+  }
 }

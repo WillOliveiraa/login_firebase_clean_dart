@@ -21,3 +21,14 @@ class ErrorLogout extends Failure {
   final String message;
   ErrorLogout({this.message});
 }
+
+class ErrorVerifyPhoneCode extends Failure {
+  final String message;
+  ErrorVerifyPhoneCode({this.message});
+}
+
+class NotAutomaticRetrieved implements Failure {
+  final String verificationId;
+  final String message;
+  NotAutomaticRetrieved(this.verificationId, {this.message});
+}

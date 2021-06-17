@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:login_firebase_clean_dart/modules/login/domain/errors/errors.dart';
 import 'package:login_firebase_clean_dart/modules/login/external/datasources/firebase_datasource.dart';
 import 'package:login_firebase_clean_dart/modules/login/infra/models/user_model.dart';
 import 'package:mockito/mockito.dart';
@@ -89,6 +90,14 @@ main() {
         throwsA(authException));
   });
 
+  test('should return Logged User validateCode', () async {
+    final result = await datasource.verifyPhoneCode();
+
+    expect(result.name, equals(user.name));
+    expect(result.phoneNumber, equals(user.phoneNumber));
+    expect(result.email, equals(user.email));
+  });
+
   test('should return Logged User', () async {
     when(auth.currentUser).thenAnswer((_) => firebaseUser);
 
@@ -97,6 +106,12 @@ main() {
     expect(result.name, equals(user.name));
     expect(result.phoneNumber, equals(user.phoneNumber));
     expect(result.email, equals(user.email));
+  });
+
+  test('should return ErrorGetLoggedUser if User is not logged', () async {
+    when(auth.currentUser).thenAnswer((_) => null);
+
+    expect(datasource.currentUser(), throwsA(isA<ErrorGetLoggedUser>()));
   });
 
   test('should complete logout', () async {

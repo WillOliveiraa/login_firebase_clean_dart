@@ -11,4 +11,7 @@ abstract class LoginRepository {
   Future<Either<Failure, LoggedUserInfo>> loggedUser();
 
   Future<Either<Failure, Unit>> logout();
+
+  Future<Either<Failure, LoggedUserInfo>> verifyPhoneCode(
+      {String verificationId, String code});
 }

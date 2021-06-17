@@ -1,8 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:login_firebase_clean_dart/app/core/stores/auth_store.dart';
 import 'package:login_firebase_clean_dart/modules/login/domain/entities/login_credential.dart';
+import 'package:login_firebase_clean_dart/modules/login/domain/errors/errors.dart';
 import 'package:login_firebase_clean_dart/modules/login/domain/usecases/login_with_phone.dart';
 import 'package:login_firebase_clean_dart/modules/login/presenter/utils/loading_dialog.dart';
 import 'package:mobx/mobx.dart';
+import 'package:asuka/asuka.dart' as asuka;
+
 part 'phone_login_controller.g.dart';
 
 class PhoneLoginController = _PhoneLoginControllerBase
@@ -29,15 +34,21 @@ abstract class _PhoneLoginControllerBase with Store {
   @action
   setPhone(String value) => this.phone = value;
 
-  enterPhone() async {
+  void enterPhone() async {
     loading.show();
     var result = await loginWithPhoneUsecase(credential);
     await loading.hide();
 
     result.fold((failure) {
-      // if (failure is N)
+      if (failure is NotAutomaticRetrieved) {
+        Modular.to.pushNamed("/verify/${failure.verificationId}");
+      } else {
+        asuka.showSnackBar(SnackBar(content: Text(failure.message)));
+      }
     }, (user) {
-      // authStore.se
+      authStore.setUser(user);
+      // Modular.to.popUntil(ModalRoute.withName(Modular.link.modulePath));
+      Modular.to.pop();
     });
   }
 }

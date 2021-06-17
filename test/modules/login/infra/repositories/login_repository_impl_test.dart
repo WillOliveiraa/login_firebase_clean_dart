@@ -55,6 +55,30 @@ main() {
     });
   });
 
+  group("verifyPhoneCode", () {
+    test('should get UserModel', () async {
+      when(datasource.verifyPhoneCode(
+              code: anyNamed('code'),
+              verificationId: anyNamed('verificationId')))
+          .thenAnswer((_) async => userReturn);
+
+      final result = await repository.verifyPhoneCode();
+
+      expect(result, isA<Right<dynamic, LoggedUserInfo>>());
+    });
+
+    test('should call ErrorVerifyPhoneCode', () async {
+      when(datasource.verifyPhoneCode(
+              code: anyNamed('code'),
+              verificationId: anyNamed('verificationId')))
+          .thenThrow(ErrorVerifyPhoneCode());
+
+      final result = await repository.verifyPhoneCode();
+
+      expect(result.leftMap((l) => l is ErrorVerifyPhoneCode), Left(true));
+    });
+  });
+
   group("loggedUser", () {
     test('should get Current User Logged', () async {
       when(datasource.currentUser()).thenAnswer((_) async => userReturn);
